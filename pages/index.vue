@@ -5,6 +5,7 @@ import type { Product } from "~/types/product";
 
 const productsStore = useProductsStore();
 const cartStore = useCartStore();
+const addingToCartProducts = ref<number[]>([]);
 
 const defaultFilters = {
   page: 1,
@@ -20,7 +21,10 @@ const filters = ref({
 });
 
 const { status, refresh } = useAsyncData("products", () =>
-  productsStore.getProducts(clearParams(filters.value))
+  Promise.all([
+    productsStore.getProducts(clearParams(filters.value)),
+    cartStore.getCartItems(),
+  ])
 );
 
 const products = computed(() => productsStore.products);
@@ -75,7 +79,7 @@ const sortOptions = [
   <div class="w-full flex flex-col gap-4 h-full">
     <ElCard>
       <template #header> Filters </template>
-
+      {{ cartStore.cart }}
       <ElForm label-position="top" class="flex flex-col">
         <div class="grid grid-cols-2 gap-4">
           <ElFormItem label="Search">
@@ -175,13 +179,16 @@ const sortOptions = [
                   <ElRate disabled :model-value="product.rating" />
                 </div>
                 <ElButton
+                  :loading="
+                    cartStore.addingProductsToCartIdList.includes(product.id)
+                  "
                   type="primary"
                   class="w-full"
-                  :disabled="cartStore.cart.some((c) => c.id === product.id)"
+                  :disabled="cartStore.hasProductInCart(product.id)"
                   @click.stop.prevent="handleAddToCart(product)"
                 >
                   {{
-                    !cartStore.cart.some((c) => c.id === product.id)
+                    !cartStore.hasProductInCart(product.id)
                       ? "Add to cart"
                       : "Added"
                   }}
