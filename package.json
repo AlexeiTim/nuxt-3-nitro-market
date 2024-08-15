@@ -13,8 +13,11 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@element-plus/nuxt": "^1.0.9",
+    "@nuxt/image": "^1.7.0",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinia/nuxt": "^0.5.3",
+    "element-plus": "^2.8.0",
     "nuxt": "^3.12.4",
     "pinia": "^2.2.1",
     "vue": "latest"

@@ -9,3 +9,7 @@ export interface Product {
   /** Краткое описание товара */
   description: string;
 }
+
+export interface ProductParams {
+  rating?: number | null;
+}
