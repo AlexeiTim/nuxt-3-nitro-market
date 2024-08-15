@@ -5,8 +5,6 @@ const { id } = useRoute().params;
 <template>
   <div>
     <div>Product detail {{ id }}</div>
-    <NuxtLink to="cart">Cart</NuxtLink>
-    <NuxtLink to="/">Products</NuxtLink>
   </div>
 </template>
 

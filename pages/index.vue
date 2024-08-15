@@ -1,9 +1,7 @@
 <script setup lang="ts"></script>
+
 <template>
-  <div>
-    <div>Products</div>
-    <NuxtLink to="/cart">Cart</NuxtLink>
-    <NuxtLink to="/1">Detail</NuxtLink>
-  </div>
+  <div class="text-red-300">Products</div>
+  <NuxtLink to="/1">Detail</NuxtLink>
 </template>
 <style scoped></style>

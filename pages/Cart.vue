@@ -2,7 +2,6 @@
 
 <template>
   <div>Cart</div>
-  <NuxtLink to="/">Products</NuxtLink>
 </template>
 
 <style scoped></style>
