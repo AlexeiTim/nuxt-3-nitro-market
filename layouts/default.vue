@@ -2,15 +2,14 @@
 
 <template>
   <div>
-    <header class="flex items-center justify-between">
-      <NuxtLink to="/">Products</NuxtLink>
-      <NuxtLink to="/cart">Cart</NuxtLink>
+    <NuxtLoadingIndicator />
+    <header class="container m-auto p-1 flex items-center justify-between">
+      <NuxtLink to="/" class="btn">Products</NuxtLink>
+      <NuxtLink to="/cart" class="btn">Cart</NuxtLink>
     </header>
 
-    <main>
+    <main class="container m-auto p-1">
       <slot />
     </main>
   </div>
 </template>
-
-<style scoped></style>

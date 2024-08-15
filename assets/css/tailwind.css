@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn {
+    @apply border  p-1 bg-green-400 text-white shadow-sm rounded-sm text-sm;
+  }
+
+  .card {
+    @apply rounded-sm bg-white shadow-sm p-4;
+  }
+
+  .card:hover {
+    @apply shadow-2xl;
+  }
+}
+
+.router-link-exact-active {
+  color: red;
+}
