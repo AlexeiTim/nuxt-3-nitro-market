@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useDebounceFn } from "@vueuse/shared";
 import { ElFormItem, ElPagination, ElSkeleton } from "element-plus";
+import type { Product } from "~/types/product";
 
 const productsStore = useProductsStore();
+const cartStore = useCartStore();
 
 const defaultFilters = {
   page: 1,
@@ -47,6 +49,10 @@ function handleChangeOrdering() {
   refresh();
 }
 
+function handleAddToCart(product: Product) {
+  cartStore.addProduct(product);
+}
+
 function handleChangePage() {
   refresh();
 }
@@ -66,7 +72,7 @@ const sortOptions = [
 </script>
 
 <template>
-  <div class="w-full flex flex-col gap-4">
+  <div class="w-full flex flex-col gap-4 h-full">
     <ElCard>
       <template #header> Filters </template>
 
@@ -139,29 +145,48 @@ const sortOptions = [
         <ElButton @click="handleClearFilters">Clear filters</ElButton>
       </div>
     </ElCard>
-    <div v-if="status === 'pending'">
-      <ElSkeleton />
-      <ElSkeleton />
-      <ElSkeleton />
-      <ElSkeleton />
-      <ElSkeleton />
-      <ElSkeleton />
+    <div v-if="status === 'pending'" class="product-grid">
+      <ElSkeleton v-for="i in 10" :key="i" animated>
+        <template #template>
+          <ElSkeletonItem variang="image" style="width: 100%; height: 250px" />
+        </template>
+      </ElSkeleton>
     </div>
     <div v-else-if="status === 'error'">Error</div>
     <div v-else-if="!!products.length">
       <div class="text-red-300 product-grid">
         <ElCard v-for="product in products" :key="product">
-          <NuxtLink :to="`/${product.id}`" class="card">
+          <NuxtLink :to="`/${product.id}`" class="block w-full h-full">
             <div
-              class="flex flex-col items-center text-center h-[200px] w-full"
+              class="flex flex-col items-center justify-between text-center w-full h-full gap-4"
             >
+              <div class="rounded-full bg-white relative w-full h-[100px]">
+                <div
+                  class="w-full h-[100px] bg-contain bg-center bg-no-repeat rounded-full"
+                  :style="{ backgroundImage: `url(${product.image_url})` }"
+                />
+              </div>
               <div
-                class="w-[100px] h-full bg-contain bg-center bg-no-repeat"
-                :style="{ backgroundImage: `url(${product.image_url})` }"
-              />
-              <p>{{ product.name }}</p>
-              <p>{{ product.price }}</p>
-              <p>{{ product.rating }}</p>
+                class="flex flex-col justify-between h-full items-start w-full"
+              >
+                <div class="flex flex-col h-full items-start w-full">
+                  <p class="text-start">{{ product.name }}</p>
+                  <p class="text-sm">{{ product.price }}Br</p>
+                  <ElRate disabled :model-value="product.rating" />
+                </div>
+                <ElButton
+                  type="primary"
+                  class="w-full"
+                  :disabled="cartStore.cart.some((c) => c.id === product.id)"
+                  @click.stop.prevent="handleAddToCart(product)"
+                >
+                  {{
+                    !cartStore.cart.some((c) => c.id === product.id)
+                      ? "Add to cart"
+                      : "Added"
+                  }}
+                </ElButton>
+              </div>
             </div>
           </NuxtLink>
         </ElCard>
@@ -182,5 +207,9 @@ const sortOptions = [
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 16px;
+}
+
+:deep(.el-card__body) {
+  height: 100%;
 }
 </style>

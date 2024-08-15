@@ -15,7 +15,3 @@
     @apply shadow-2xl;
   }
 }
-
-.router-link-exact-active {
-  color: red;
-}

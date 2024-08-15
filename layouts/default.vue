@@ -1,23 +1,18 @@
 <script setup lang="ts">
-import { useDark, useToggle } from "@vueuse/core";
-
-const isDark = useDark();
-const toggleDark = useToggle(isDark);
-
-function handleToggle() {
-  toggleDark();
-  console.log("toggle");
-}
+import { ElButton } from "element-plus";
 </script>
 
 <template>
   <div class="w-full">
     <NuxtLoadingIndicator />
-    {{ isDark }}
     <header class="container m-auto p-1 flex items-center justify-between">
-      <ElButton @click="handleToggle">Switch theme</ElButton>
-      <NuxtLink to="/" class="btn">Products</NuxtLink>
-      <NuxtLink to="/cart" class="btn">Cart</NuxtLink>
+      <NuxtLink to="/">Logo</NuxtLink>
+      <div class="flex items-center gap-4">
+        <ThemeSwitcher />
+        <NuxtLink to="/cart">
+          <ElButton icon="ShoppingCart"> Cart </ElButton>
+        </NuxtLink>
+      </div>
     </header>
 
     <main class="container m-auto p-1 w-full">
