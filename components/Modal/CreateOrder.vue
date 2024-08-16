@@ -44,7 +44,7 @@ const emits = defineEmits<{
     overlay-transition="vfm-fade"
     content-transition="vfm-fade"
   >
-    <div class="w-[200px] h-[300px] gap-4 flex flex-col justify-between">
+    <div class="w-[320px] h-[300px] gap-4 flex flex-col justify-between">
       <div class="flex items-center justify-between">
         <h3>Order</h3>
         <ElIcon class="cursor-pointer" @click="emits('close')">

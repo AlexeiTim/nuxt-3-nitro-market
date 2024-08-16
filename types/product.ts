@@ -11,14 +11,19 @@ export interface Product {
   price: number;
   /** Краткое описание товара */
   description: string;
-
+  /** Рейтинг */
   rating: number;
-
+  /** Бренд */
   brand: Brand;
-
+  /** Категори */
   category: Category;
 }
 
 export interface ProductParams {
-  rating?: number | null;
+  page?: number;
+  category?: string;
+  brand?: string;
+  search?: string;
+  rating?: number | string;
+  ordering?: string;
 }

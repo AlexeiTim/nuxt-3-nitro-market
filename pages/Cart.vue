@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import ModalCreateOrder from "~/components/Modal/CreateOrder.vue";
 import { ElButton, ElTooltip } from "element-plus";
-import { useModal } from "vue-final-modal";
 import { useCartStore } from "~/stores/cart-store";
 
 const cartStore = useCartStore();
@@ -21,15 +19,6 @@ function handleGoToDetail(id: number) {
 function handleIncrementProductQuantity(cartItemId: number) {
   cartStore.updateProductQuantity(cartItemId, 1);
 }
-
-const { open, close } = useModal({
-  component: ModalCreateOrder,
-  attrs: {
-    onClose() {
-      close();
-    },
-  },
-});
 </script>
 
 <template>
@@ -37,7 +26,7 @@ const { open, close } = useModal({
     <ElTag type="primary">Cart is empty</ElTag>
   </div>
   <div v-else class="flex flex-col gap-4 w-full">
-    <ElButton type="info" @click="open">Create order</ElButton>
+    <OrderCreateButton />
     <div class="grid grid-cols-2 gap-5">
       <ElCard v-for="cartItem in cartStore.cart" :key="cartItem.id">
         <div class="flex gap-2">

@@ -5,9 +5,11 @@ const handleGoHome = () => clearError({ redirect: "/" });
 </script>
 
 <template>
-  <div>
-    Not Found: {{ error.message }}
-    <button @click="handleGoHome">Go home</button>
+  <div class="size-full flex items-center justify-center">
+    <ElCard class="w-[50vw] h-[50vh]">
+      <ElAlert>Error: {{ error.message }}</ElAlert>
+      <ElButton @click="handleGoHome">Go home</ElButton>
+    </ElCard>
   </div>
 </template>
 
