@@ -3,7 +3,6 @@ import { useDebounceFn } from "@vueuse/shared";
 import { ElFormItem, ElPagination, ElSkeleton } from "element-plus";
 import AddProductToCartButton from "~/components/AddProductToCartButton.vue";
 import DeleteProductFromCartButton from "~/components/DeleteProductFromCartButton.vue";
-import type { Product } from "~/types/product";
 
 const productsStore = useProductsStore();
 const cartStore = useCartStore();
@@ -44,31 +43,18 @@ function handleClearFilters() {
   refresh();
 }
 
-function handleChangeCategory() {
+function handleChangeFilter() {
+  filters.value.page = 1;
   refresh();
-}
-
-function handleChangeBrand() {
-  refresh();
-}
-
-function handleChangeRating() {
-  refresh();
-}
-
-function handleChangeOrdering() {
-  refresh();
-}
-
-function handleAddToCart(product: Product) {
-  cartStore.addProduct(product);
 }
 
 function handleChangePage() {
   refresh();
 }
 
-const handleInputSearch = useDebounceFn(() => refresh(), 400);
+const handleInputSearch = useDebounceFn(() => {
+  handleChangeFilter();
+}, 400);
 
 const ratings = [1, 2, 3, 4, 5];
 
@@ -101,7 +87,7 @@ const sortOptions = [
             <ElSelect
               v-model="filters.ordering"
               placeholder="Select ordering"
-              @change="handleChangeOrdering"
+              @change="handleChangeFilter"
             >
               <ElOption
                 v-for="option in sortOptions"
@@ -118,7 +104,7 @@ const sortOptions = [
               v-model="filters.rating"
               placeholder="Select rating"
               clearable
-              @change="handleChangeRating"
+              @change="handleChangeFilter"
             >
               <ElOption
                 v-for="rating in ratings"
@@ -132,14 +118,14 @@ const sortOptions = [
           <ElFormItem label="Category">
             <CategoriesRequestSelect
               v-model="filters.category"
-              @change="handleChangeCategory"
+              @change="handleChangeFilter"
             />
           </ElFormItem>
 
           <ElFormItem label="Brand">
             <BrandsRequestSelect
               v-model="filters.brand"
-              @change="handleChangeBrand"
+              @change="handleChangeFilter"
             />
           </ElFormItem>
         </div>
