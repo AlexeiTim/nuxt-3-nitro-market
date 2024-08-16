@@ -1,15 +1,15 @@
 {
-  "version": 2,
+  "version": 3,
   "builds": [
     {
-      "src": "nuxt.config.ts",
+      "src": ".output/server/index.mjs",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/"
+      "dest": ".output/server/index.mjs"
     }
   ]
 }
