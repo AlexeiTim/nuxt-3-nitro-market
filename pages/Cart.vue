@@ -63,14 +63,16 @@ const { open, close } = useModal({
                 <ElButton
                   circle
                   @click="handleDicrimentProductQuantity(cartItem.id)"
-                  >-</ElButton
                 >
+                  -
+                </ElButton>
                 <span>{{ cartItem.quantity }}</span>
                 <ElButton
                   circle
                   @click="handleIncrementProductQuantity(cartItem.id)"
-                  >+</ElButton
                 >
+                  +
+                </ElButton>
               </div>
             </div>
 
