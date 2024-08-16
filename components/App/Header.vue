@@ -15,10 +15,10 @@ async function handleLogout() {
       <AppLogo />
       <div class="flex items-center gap-4">
         <ThemeSwitcher />
-        <NuxtLink to="/orders">
+        <NuxtLink to="/orders" v-show="userStore.user">
           <OrderButton />
         </NuxtLink>
-        <NuxtLink to="/cart">
+        <NuxtLink to="/cart" v-show="userStore.user">
           <CartButton />
         </NuxtLink>
 

@@ -3,14 +3,23 @@ import { ElSkeleton } from "element-plus";
 import { useCartStore } from "~/stores/cart-store";
 import AddProductToCartButton from "../components/AddProductToCartButton.vue";
 import DeleteProductFromCartButton from "~/components/DeleteProductFromCartButton.vue";
+import { useReviewsStore } from "~/stores/reviews-store";
+import { notifyService } from "~/services/notify.service";
 
 const route = useRoute();
 const productsStore = useProductsStore();
 const cartStore = useCartStore();
+const reviewsStore = useReviewsStore();
 
-const { data: product, status } = useAsyncData(() =>
-  productsStore.getProduct(+route.params.id)
+const { data, status } = useAsyncData(
+  async () =>
+    await Promise.all([
+      productsStore.getProduct(+route.params.id),
+      reviewsStore.getProductReviews(+route.params.id),
+    ])
 );
+const isLoading = ref(false);
+const product = computed(() => data.value?.[0]);
 
 if (!product)
   throw createError({
@@ -22,10 +31,32 @@ if (!product)
 useHead({
   title: product.value?.name,
 });
+
+const comment = ref("");
+
+async function handleAddComment() {
+  if (!product.value) return;
+
+  isLoading.value = true;
+  await reviewsStore.createComment({
+    comment: comment.value,
+    product: product.value?.id,
+  });
+  isLoading.value = false;
+
+  if (reviewsStore.error) return;
+
+  comment.value = "";
+  notifyService.success("Review added");
+}
+
+onBeforeUnmount(() => {
+  reviewsStore.$reset();
+});
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col gap-4">
     <div v-if="status === 'pending'">
       <ElSkeleton />
     </div>
@@ -65,6 +96,32 @@ useHead({
           <DeleteProductFromCartButton v-else :product-id="product.id" />
         </div>
       </div>
+    </div>
+    <div class="flex flex-col gap-2">
+      <h1>Reviews</h1>
+      <ElCard v-for="review in reviewsStore.reviews" :key="review.id">
+        <template #header>
+          <p>
+            {{ review.user.username }}
+            {{ $moment(review.created_at).format("DD.MM.YYYY HH:mm:ss") }}
+          </p>
+        </template>
+        <p>{{ review.comment }}</p>
+      </ElCard>
+      <ElCard>
+        <div class="flex flex-col gap-2">
+          <ElInput v-model="comment" />
+          <div class="flex items-center justify-end">
+            <ElButton
+              type="primary"
+              :loading="isLoading"
+              @click="handleAddComment"
+            >
+              Create comment
+            </ElButton>
+          </div>
+        </div>
+      </ElCard>
     </div>
   </div>
 </template>
