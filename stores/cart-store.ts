@@ -11,13 +11,13 @@ export const useCartStore = defineStore("cartStore", () => {
 
   const removeProductFromCart = async (productId: number) => {
     try {
+      cart.value = cart.value.filter((c) => c.product.id !== productId);
       await $fetch("/api/cart-items", {
         method: "DELETE",
         body: {
           product_id: productId,
         },
       });
-      cart.value = cart.value.filter((c) => c.product.id !== productId);
     } catch (e) {
       console.error(e);
     }
@@ -60,12 +60,6 @@ export const useCartStore = defineStore("cartStore", () => {
     else cart.value.push(response);
   };
 
-  const deleteProduct = (id: number) => {
-    const cartIndex = cart.value.findIndex((c) => c.id === id);
-    if (cartIndex === -1) return;
-    cart.value.splice(cartIndex, 1);
-  };
-
   const hasProductInCart = computed(() => (id: number) => {
     return cart.value.some((c) => c.product.id === id);
   });
@@ -86,7 +80,6 @@ export const useCartStore = defineStore("cartStore", () => {
   return {
     cart,
     addProduct,
-    deleteProduct,
     getCartItems,
     removeProductFromCart,
     updateProductQuantity,

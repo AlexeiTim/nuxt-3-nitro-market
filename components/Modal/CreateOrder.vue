@@ -21,7 +21,10 @@ async function handleCreateOrder() {
   await formRef.value.validate();
 
   isCreateOrderLoading.value = true;
-  await ordersStore.createOrder(formData.value);
+  await ordersStore.createOrder({
+    ...formData.value,
+    total_price: cartStore.totalPrice,
+  });
   await cartStore.getCartItems();
   isCreateOrderLoading.value = false;
 

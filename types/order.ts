@@ -6,4 +6,12 @@ export interface Order {
   first_name: string;
   /** Фамилия заказчика */
   last_name: string;
+  /** Общая сумма заказа */
+  total_price: number;
+}
+
+export interface OrderCreateData {
+  first_name: string;
+  last_name: string;
+  total_price: number;
 }

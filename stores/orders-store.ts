@@ -1,4 +1,4 @@
-import type { Order } from "~/types/order";
+import type { Order, OrderCreateData } from "~/types/order";
 
 export const useOrdersStore = defineStore("ordersStore", () => {
   const orders = ref<Order[]>([]);
@@ -8,7 +8,7 @@ export const useOrdersStore = defineStore("ordersStore", () => {
     return (orders.value = ordersResponse);
   }
 
-  async function createOrder(body: { first_name: string; last_name: string }) {
+  async function createOrder(body: OrderCreateData) {
     try {
       const response = await $fetch<Order>("/api/orders/", {
         method: "POST",
@@ -24,7 +24,7 @@ export const useOrdersStore = defineStore("ordersStore", () => {
   async function cancelOrder(orderId: number) {
     const orderIndex = orders.value.findIndex((o) => o.id === orderId);
     if (orderIndex !== -1) orders.value.splice(orderIndex, 1);
-    
+
     await $fetch(`/api/orders/${orderId}`, {
       method: "DELETE",
     });
