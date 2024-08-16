@@ -16,10 +16,14 @@ export const useOrdersStore = defineStore("ordersStore", () => {
       });
       orders.value.push(response);
       return response;
-    } catch (e) {}
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   async function cancelOrder(orderId: number) {
+    const orderIndex = orders.value.findIndex((o) => o.id === orderId);
+    if (orderIndex !== -1) orders.value.splice(orderIndex, 1);
     const response = await $fetch(`/api/orders/${orderId}`, {
       method: "DELETE",
     });

@@ -19,9 +19,13 @@
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinia/nuxt": "^0.5.3",
     "element-plus": "^2.8.0",
+    "moment": "^2.30.1",
     "nuxt": "^3.12.4",
     "pinia": "^2.2.1",
     "vue": "latest",
     "vue-final-modal": "^4.5.4"
+  },
+  "devDependencies": {
+    "@types/moment": "^2.11.29"
   }
 }

@@ -33,7 +33,9 @@ const { open, close } = useModal({
 </script>
 
 <template>
-  <div v-if="!cartStore.cart.length">Пусто</div>
+  <div v-if="!cartStore.cart.length" class="flex items-center justify-center">
+    <ElTag type="primary">Cart is empty</ElTag>
+  </div>
   <div v-else class="flex flex-col gap-4 w-full">
     <ElButton type="info" @click="open">Create order</ElButton>
     <div class="grid grid-cols-2 gap-5">

@@ -8,16 +8,25 @@ import type { Product } from "~/types/product";
 const productsStore = useProductsStore();
 const cartStore = useCartStore();
 
-const defaultFilters = {
+interface ProductFilters {
+  page?: number;
+  category?: string;
+  brand?: string;
+  search?: string;
+  rating?: number | string;
+  ordering?: string;
+}
+
+const defaultFilters: ProductFilters = {
   page: 1,
-  rating: 0,
   category: "",
   brand: "",
   search: "",
   ordering: "",
+  rating: "",
 };
 
-const filters = ref({
+const filters = ref<ProductFilters>({
   ...defaultFilters,
 });
 
@@ -136,13 +145,16 @@ const sortOptions = [
         </div>
       </ElForm>
       <div class="flex justify-between">
-        <ElPagination
-          v-if="!!products.length"
-          layout="total, prev, pager, next"
-          :total="totalProducts"
-          v-model:currentPage="filters.page"
-          @current-change="handleChangePage"
-        />
+        <div>
+          <ElPagination
+            v-if="!!products.length"
+            layout="total, prev, pager, next"
+            :total="totalProducts"
+            v-model:currentPage="filters.page"
+            @current-change="handleChangePage"
+          />
+        </div>
+
         <ElButton icon="CircleClose" @click="handleClearFilters"
           >Clear filters</ElButton
         >
@@ -188,7 +200,9 @@ const sortOptions = [
         </ElCard>
       </div>
     </div>
-    <div v-else>Empty</div>
+    <div v-else class="flex items-center justify-center">
+      <ElTag>Empty</ElTag>
+    </div>
     <ElPagination
       v-if="!!products.length"
       layout="total, prev, pager, next"
