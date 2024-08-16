@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: your-service-name
-    env: node
-    buildCommand: npm run build
-    startCommand: npm start
-    envVars:
-      - key: NPM_CONFIG_PRODUCTION
-        value: false
