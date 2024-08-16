@@ -26,7 +26,7 @@ if (!product)
     <div v-if="status === 'pending'">
       <ElSkeleton />
     </div>
-    <div v-else-if="product" class="flex gap-4">
+    <div v-else-if="product" class="gap-4 flex flex-col md:flex-row">
       <ElCard class="w-[100vw] h-[50vh]">
         <div
           class="bg-contain w-full h-full bg-center bg-no-repeat rounded-sm bg-white relative"
@@ -35,11 +35,11 @@ if (!product)
       </ElCard>
 
       <div
-        class="flex-grow max-w-[50vw] min-w-[50vw] flex flex-col justify-between gap-2 items-start"
+        class="flex-grow md:max-w-[50vw] md:min-w-[50vw] flex flex-col justify-between gap-2 md:items-start"
       >
-        <div>
+        <div class="w-full">
           <h3 class="font-bold">{{ product.name }}</h3>
-          <p>{{ product.description }}</p>
+          <p class="w-full">{{ product.description }}</p>
         </div>
         <div class="flex flex-col items-start gap-3">
           <div class="flex justify-start gap-2 flex-col items-start">
