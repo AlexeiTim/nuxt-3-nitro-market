@@ -31,6 +31,21 @@ export const useReviewsStore = defineStore("reviewsStore", () => {
     }
   }
 
+  async function removeReview(id: number) {
+    error.value = null;
+
+    const reviewIndex = reviews.value.findIndex((r) => r.id === id);
+    if (reviewIndex !== -1) reviews.value.splice(reviewIndex, 1);
+
+    try {
+      await $fetch(`/api/reviews/${id}`, {
+        method: "DELETE",
+      });
+    } catch (e) {
+      error.value = e;
+    }
+  }
+
   function $reset() {
     reviews.value = [];
     error.value = null;
@@ -40,6 +55,7 @@ export const useReviewsStore = defineStore("reviewsStore", () => {
     error,
     getProductReviews,
     createComment,
+    removeReview,
     $reset,
   };
 });

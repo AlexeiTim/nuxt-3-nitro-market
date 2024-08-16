@@ -9,6 +9,7 @@ import { notifyService } from "~/services/notify.service";
 const route = useRoute();
 const productsStore = useProductsStore();
 const cartStore = useCartStore();
+const userStore = useUserStore();
 const reviewsStore = useReviewsStore();
 
 const { data, status } = useAsyncData(
@@ -48,6 +49,12 @@ async function handleAddComment() {
 
   comment.value = "";
   notifyService.success("Review added");
+}
+
+async function handleDeleteReview(id: number) {
+  isLoading.value = true;
+  await reviewsStore.removeReview(id);
+  isLoading.value = false;
 }
 
 onBeforeUnmount(() => {
@@ -101,10 +108,19 @@ onBeforeUnmount(() => {
       <h1>Reviews</h1>
       <ElCard v-for="review in reviewsStore.reviews" :key="review.id">
         <template #header>
-          <p>
-            {{ review.user.username }}
-            {{ $moment(review.created_at).format("DD.MM.YYYY HH:mm:ss") }}
-          </p>
+          <div class="flex items-center justify-between">
+            <p>
+              {{ review.user.username }}
+              {{ $moment(review.created_at).format("DD.MM.YYYY HH:mm:ss") }}
+            </p>
+            <ElButton
+              v-show="userStore.user && review.user.id === userStore?.user.id"
+              circle
+              type="danger"
+              icon="Delete"
+              @click="handleDeleteReview(review.id)"
+            />
+          </div>
         </template>
         <p>{{ review.comment }}</p>
       </ElCard>
