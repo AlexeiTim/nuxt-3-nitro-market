@@ -1,6 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: true,
+  nitro: {
+    debug: true, // Включение отладочного режима Nitro
+  },
   runtimeConfig: {
     public: {
       baseApiUrl: process.env.BASE_API_URL,
