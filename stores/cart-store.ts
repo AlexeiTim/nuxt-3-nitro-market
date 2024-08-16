@@ -3,6 +3,7 @@ import type { Product } from "~/types/product";
 
 export const useCartStore = defineStore("cartStore", () => {
   const cart = ref<CartItem[]>([]);
+
   async function getCartItems() {
     const cartItems = await $fetch<CartItem[]>("/api/cart-items");
     cart.value = cartItems;
@@ -26,20 +27,22 @@ export const useCartStore = defineStore("cartStore", () => {
     cartItemId: number,
     quantity: number
   ) => {
-    const response = await $fetch<CartItem>(`/api/cart-items/${cartItemId}/`, {
-      method: "PATCH",
-      body: {
-        quantity,
-      },
-    });
-    if (!response) {
-      cart.value = cart.value.filter((c) => c.id !== cartItemId);
-      return;
-    }
     const cartIndex = cart.value.findIndex((c) => c.id === cartItemId);
-
     if (cartIndex === -1) return;
-    cart.value[cartIndex] = response;
+    cart.value[cartIndex].quantity = cart.value[cartIndex].quantity + quantity;
+
+    if (cart.value[cartIndex].quantity < 1)
+      cart.value = cart.value.filter((c) => c.id !== cartItemId);
+    try {
+      await $fetch<CartItem>(`/api/cart-items/${cartItemId}/`, {
+        method: "PATCH",
+        body: {
+          quantity,
+        },
+      });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const addProduct = async (product: Product) => {
