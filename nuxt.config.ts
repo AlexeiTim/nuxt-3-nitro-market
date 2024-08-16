@@ -9,17 +9,6 @@ export default defineNuxtConfig({
     "element-plus/theme-chalk/dark/css-vars.css",
     "vue-final-modal/style.css",
   ],
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes("node_modules")) {
-            return "vendor";
-          }
-        },
-      },
-    },
-  },
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
   modules: [
