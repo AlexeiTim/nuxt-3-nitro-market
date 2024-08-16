@@ -91,7 +91,7 @@ onBeforeUnmount(() => {
           <h3 class="font-bold">{{ product.name }}</h3>
           <p class="w-full">{{ product.description }}</p>
         </div>
-        <div class="flex flex-col items-start gap-3">
+        <div class="flex flex-col items-start gap-3 w-full">
           <div class="flex justify-start gap-2 flex-col items-start">
             <p class="text-sm">
               Category:
