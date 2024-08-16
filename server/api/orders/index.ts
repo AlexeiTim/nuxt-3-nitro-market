@@ -11,7 +11,6 @@ export default defineEventHandler(async (event) => {
     return response;
   } else if (method === "POST") {
     const body = await readBody(event);
-    console.log("method PSOT");
     const response = await $fetch(`${config.public.baseApiUrl}/orders/`, {
       method: "POST",
       body: JSON.stringify(body),

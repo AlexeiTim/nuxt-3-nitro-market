@@ -1,7 +1,7 @@
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const method = event.node.req.method;
-  console.log("init request");
+
   if (method === "GET") {
     const cartItems = await $fetch(`${config.public.baseApiUrl}/cart-items`);
     return cartItems;

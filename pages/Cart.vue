@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ElButton, ElTooltip } from "element-plus";
 import { useCartStore } from "~/stores/cart-store";
 
 const cartStore = useCartStore();

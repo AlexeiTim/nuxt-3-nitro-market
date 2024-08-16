@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ElSkeleton } from "element-plus";
 import { useCartStore } from "~/stores/cart-store";
-import type { Product } from "~/types/product";
 import AddProductToCartButton from "../components/AddProductToCartButton.vue";
 import DeleteProductFromCartButton from "~/components/DeleteProductFromCartButton.vue";
 
@@ -16,7 +15,7 @@ const { data: product, status } = useAsyncData(() =>
 if (!product)
   throw createError({
     statusCode: 404,
-    message: "Не удалось найти продукт",
+    message: "Not found Product",
     fatal: true,
   });
 </script>

@@ -3,13 +3,20 @@ import type { Product } from "~/types/product";
 
 export const useCartStore = defineStore("cartStore", () => {
   const cart = ref<CartItem[]>([]);
+  const error = ref<any>(null);
 
   async function getCartItems() {
-    const cartItems = await $fetch<CartItem[]>("/api/cart-items");
-    cart.value = cartItems;
+    error.value = null;
+    try {
+      const cartItems = await $fetch<CartItem[]>("/api/cart-items");
+      cart.value = cartItems;
+    } catch (e) {
+      error.value = e;
+    }
   }
 
   const removeProductFromCart = async (productId: number) => {
+    error.value = null;
     try {
       cart.value = cart.value.filter((c) => c.product.id !== productId);
       await $fetch("/api/cart-items", {
@@ -19,7 +26,7 @@ export const useCartStore = defineStore("cartStore", () => {
         },
       });
     } catch (e) {
-      console.error(e);
+      error.value = e;
     }
   };
 
@@ -27,6 +34,8 @@ export const useCartStore = defineStore("cartStore", () => {
     cartItemId: number,
     quantity: number
   ) => {
+    error.value = null;
+
     const cartIndex = cart.value.findIndex((c) => c.id === cartItemId);
     if (cartIndex === -1) return;
     cart.value[cartIndex].quantity = cart.value[cartIndex].quantity + quantity;
@@ -41,23 +50,28 @@ export const useCartStore = defineStore("cartStore", () => {
         },
       });
     } catch (e) {
-      console.error(e);
+      error.value = e;
     }
   };
 
   const addProduct = async (product: Product) => {
-    const response = await $fetch<CartItem>("/api/cart-items", {
-      method: "POST",
-      body: {
-        product_id: product.id,
-        quantity: 1,
-      },
-    });
-    const cartItemIndex = cart.value.findIndex(
-      (cart) => cart.product.id === product.id
-    );
-    if (cartItemIndex !== -1) cart.value[cartItemIndex] = response;
-    else cart.value.push(response);
+    error.value = null;
+    try {
+      const response = await $fetch<CartItem>("/api/cart-items", {
+        method: "POST",
+        body: {
+          product_id: product.id,
+          quantity: 1,
+        },
+      });
+      const cartItemIndex = cart.value.findIndex(
+        (cart) => cart.product.id === product.id
+      );
+      if (cartItemIndex !== -1) cart.value[cartItemIndex] = response;
+      else cart.value.push(response);
+    } catch (e) {
+      error.value = e;
+    }
   };
 
   const hasProductInCart = computed(() => (id: number) => {
