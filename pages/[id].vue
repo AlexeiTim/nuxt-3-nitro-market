@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ElSkeleton } from "element-plus";
+import { ElSkeleton, ElSkeletonItem } from "element-plus";
 import { useCartStore } from "~/stores/cart-store";
 import AddProductToCartButton from "../components/AddProductToCartButton.vue";
 import DeleteProductFromCartButton from "~/components/DeleteProductFromCartButton.vue";
@@ -65,7 +65,16 @@ onBeforeUnmount(() => {
 <template>
   <div class="flex flex-col gap-4">
     <div v-if="status === 'pending'">
-      <ElSkeleton />
+      <ElSkeleton class="flex gap-4 w-full" animated>
+        <template #template>
+          <div class="flex gap-4 w-full">
+            <ElSkeletonItem variang="image" style="width: 40vw; height: 50vh" />
+            <div class="flex flex-col gap-4 w-full">
+              <ElSkeletonItem v-for="i in 5" :key="i" />
+            </div>
+          </div>
+        </template>
+      </ElSkeleton>
     </div>
     <div v-else-if="product" class="gap-4 flex flex-col md:flex-row">
       <ElCard class="w-[100vw] h-[50vh]">
@@ -104,8 +113,18 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </div>
-    <div class="flex flex-col gap-2">
-      <h1>Reviews</h1>
+    <ElSkeleton v-if="status === 'pending'" animated>
+      <template #template>
+        <ElSkeletonItem style="width: 100%; height: 100px" />
+      </template>
+    </ElSkeleton>
+    <div v-else class="flex flex-col gap-2">
+      <h1 class="text-center">Reviews</h1>
+      <ElCard v-if="!reviewsStore.reviews?.length">
+        <div class="flex items-center justify-center">
+          <ElTag type="primary">Empty</ElTag>
+        </div>
+      </ElCard>
       <ElCard v-for="review in reviewsStore.reviews" :key="review.id">
         <template #header>
           <div class="flex items-center justify-between">
@@ -124,7 +143,7 @@ onBeforeUnmount(() => {
         </template>
         <p>{{ review.comment }}</p>
       </ElCard>
-      <ElCard>
+      <ElCard v-if="userStore.user">
         <div class="flex flex-col gap-2">
           <ElInput v-model="comment" />
           <div class="flex items-center justify-end">
