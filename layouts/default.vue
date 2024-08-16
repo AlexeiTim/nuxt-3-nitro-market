@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { ModalsContainer } from "vue-final-modal";
+
+const userStore = useUserStore();
+
+await useAsyncData("user", () => userStore.getCurrentUser());
 </script>
 
 <template>

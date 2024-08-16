@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { notifyService } from "~/services/notify.service";
 import { useUserStore } from "~/stores/user-store";
 import type { AuthData } from "~/types/auth";
 
@@ -19,6 +20,7 @@ async function handleLogin() {
   await userStore.login(formData.value);
   isLoading.value = false;
   if (userStore.error) return;
+  notifyService.success("Welcome, " + userStore.user?.username + "!");
   navigateTo("/");
 }
 

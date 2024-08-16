@@ -15,13 +15,34 @@ async function handleLogout() {
       <AppLogo />
       <div class="flex items-center gap-4">
         <ThemeSwitcher />
-        <ElButton v-if="!userStore.user" @click="handleLogout">Logout</ElButton>
-        <p v-else>{{ userStore.user?.username }}</p>
         <NuxtLink to="/orders">
           <OrderButton />
         </NuxtLink>
         <NuxtLink to="/cart">
           <CartButton />
+        </NuxtLink>
+
+        <ElDropdown placement="bottom-start" v-if="userStore.user">
+          <ElAvatar :size="32">
+            <ElIcon>
+              <Avatar />
+            </ElIcon>
+          </ElAvatar>
+          <template #dropdown>
+            <p class="p-1 text-center">
+              <span>{{ userStore.user.username }}</span>
+              <p>1000 Br</p>
+            </p>
+            <ElDropdownItem @click="handleLogout" class="text-center">
+              Logout
+            </ElDropdownItem>
+            <ElDropdownItem>
+              <NuxtLink to="/profile"> Profile </NuxtLink>
+            </ElDropdownItem>
+          </template>
+        </ElDropdown>
+        <NuxtLink v-else to="/login">
+          <ElButton>Sign in</ElButton>
         </NuxtLink>
       </div>
     </div>

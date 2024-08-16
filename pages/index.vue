@@ -2,10 +2,8 @@
 import type { ProductParams } from "~/types/product";
 
 const productsStore = useProductsStore();
-const userStore = useUserStore();
 
 const filters = ref<ProductParams>({});
-await useAsyncData("user", () => userStore.getCurrentUser());
 
 const { status, refresh } = useAsyncData("products", () =>
   productsStore.getProducts(clearParams(filters.value))
