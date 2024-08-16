@@ -11,11 +11,6 @@ const { data: product, status } = useAsyncData(() =>
   productsStore.getProduct(+route.params.id)
 );
 
-const addedToCart = computed(() => {
-  const findedProduct = cartStore.cart.find((c) => c.id === product.value?.id);
-  return !!findedProduct;
-});
-
 function handleAddProductToCart(product: Product) {
   cartStore.addProduct(product);
 }
@@ -37,20 +32,19 @@ if (!product)
     <div v-if="status === 'pending'">
       <ElSkeleton />
     </div>
-    <div v-else>
+    <div v-if="product">
       <img :src="product.image_url" />
       <div>Product detail {{ product.id }}</div>
       <div>name: {{ product.name }}</div>
-      <button
-        v-if="!addedToCart"
-        class="btn"
-        @click="handleAddProductToCart(product)"
+      <ElButton
+        :loading="cartStore.addingProductsToCartIdList.includes(product.id)"
+        type="primary"
+        class="w-full"
+        :disabled="cartStore.hasProductInCart(product.id)"
+        @click.stop.prevent="cartStore.addProduct(product)"
       >
-        {{ "Добавить в корзину" }}
-      </button>
-      <button v-else @click="handleDeleteProductFromCart(product)">
-        Уже в корзине, убрать?
-      </button>
+        {{ !cartStore.hasProductInCart(product.id) ? "Add to cart" : "Added" }}
+      </ElButton>
     </div>
   </div>
 </template>

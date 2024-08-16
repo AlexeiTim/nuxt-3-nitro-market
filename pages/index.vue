@@ -5,7 +5,6 @@ import type { Product } from "~/types/product";
 
 const productsStore = useProductsStore();
 const cartStore = useCartStore();
-const addingToCartProducts = ref<number[]>([]);
 
 const defaultFilters = {
   page: 1,
@@ -21,10 +20,7 @@ const filters = ref({
 });
 
 const { status, refresh } = useAsyncData("products", () =>
-  Promise.all([
-    productsStore.getProducts(clearParams(filters.value)),
-    cartStore.getCartItems(),
-  ])
+  productsStore.getProducts(clearParams(filters.value))
 );
 
 const products = computed(() => productsStore.products);
@@ -79,7 +75,6 @@ const sortOptions = [
   <div class="w-full flex flex-col gap-4 h-full">
     <ElCard>
       <template #header> Filters </template>
-      {{ cartStore.cart }}
       <ElForm label-position="top" class="flex flex-col">
         <div class="grid grid-cols-2 gap-4">
           <ElFormItem label="Search">

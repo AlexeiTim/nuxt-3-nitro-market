@@ -73,6 +73,17 @@ export const useCartStore = defineStore("cartStore", () => {
 
   const cartProductIdList = computed(() => cart.value.map((c) => c.product.id));
 
+  const totalPrice = computed(() =>
+    cart.value.reduce(
+      (acc, cartItem) => acc + cartItem.product.price * cartItem.quantity,
+      0
+    )
+  );
+
+  const productCountInCart = computed(() =>
+    cart.value.reduce((acc, cartItem) => acc + cartItem.quantity, 0)
+  );
+
   return {
     cart,
     addProduct,
@@ -83,5 +94,7 @@ export const useCartStore = defineStore("cartStore", () => {
     cartProductIdList,
     hasProductInCart,
     addingProductsToCartIdList,
+    totalPrice,
+    productCountInCart,
   };
 });
