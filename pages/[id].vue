@@ -18,6 +18,10 @@ if (!product)
     message: "Not found Product",
     fatal: true,
   });
+
+useHead({
+  title: product.value?.name,
+});
 </script>
 
 <template>

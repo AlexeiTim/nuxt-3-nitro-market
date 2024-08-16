@@ -19,6 +19,10 @@ function handleChangeFilter() {
 function handleChangePage() {
   refresh();
 }
+
+useHead({
+  title: "Products",
+});
 </script>
 
 <template>

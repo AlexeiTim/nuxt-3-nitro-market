@@ -2,6 +2,10 @@
 import { useOrdersStore } from "~/stores/orders-store";
 
 const ordersStore = useOrdersStore();
+
+useHead({
+  title: "Orders",
+});
 </script>
 
 <template>

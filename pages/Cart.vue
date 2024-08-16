@@ -2,6 +2,10 @@
 import { useCartStore } from "~/stores/cart-store";
 
 const cartStore = useCartStore();
+
+useHead({
+  title: "Cart",
+});
 </script>
 
 <template>
