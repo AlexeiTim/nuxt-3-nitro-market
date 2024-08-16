@@ -1,7 +1,12 @@
 <script setup lang="ts">
-const cartStore = useCartStore();
+import { useOrdersStore } from "~/stores/orders-store";
 
-useAsyncData("cart", () => cartStore.getCartItems());
+const cartStore = useCartStore();
+const orderStore = useOrdersStore();
+
+useAsyncData("cart", () =>
+  Promise.all([cartStore.getCartItems(), orderStore.getOrders()])
+);
 </script>
 
 <template>

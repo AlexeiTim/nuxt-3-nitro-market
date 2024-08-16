@@ -15,7 +15,7 @@ import { ModalsContainer } from "vue-final-modal";
           <div class="flex items-center gap-4">
             <ThemeSwitcher />
             <NuxtLink to="/orders">
-              <ElButton>Orders</ElButton>
+              <OrderButton />
             </NuxtLink>
             <NuxtLink to="/cart">
               <CartButton />

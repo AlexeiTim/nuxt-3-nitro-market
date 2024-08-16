@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ElFormItem } from "element-plus";
 import { VueFinalModal } from "vue-final-modal";
+import { useOrdersStore } from "~/stores/orders-store";
 
 const cartStore = useCartStore();
+const ordersStore = useOrdersStore();
+
 const formData = ref({
   first_name: "",
   last_name: "",
@@ -16,16 +19,17 @@ const formRules = ref({
 
 async function handleCreateOrder() {
   await formRef.value.validate();
-  isCreateOrderLoading.value = true;
 
-  setTimeout(() => {
-    isCreateOrderLoading.value = false;
-    ElNotification({
-      message: "Create order",
-      type: "success",
-    });
-    emits("close");
-  }, 1000);
+  isCreateOrderLoading.value = true;
+  await ordersStore.createOrder(formData.value);
+  await cartStore.getCartItems();
+  isCreateOrderLoading.value = false;
+
+  ElNotification({
+    message: "Create order",
+    type: "success",
+  });
+  emits("close");
 }
 
 const emits = defineEmits<{
