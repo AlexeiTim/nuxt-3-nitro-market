@@ -21,6 +21,7 @@
     "element-plus": "^2.8.0",
     "nuxt": "^3.12.4",
     "pinia": "^2.2.1",
-    "vue": "latest"
+    "vue": "latest",
+    "vue-final-modal": "^4.5.4"
   }
 }

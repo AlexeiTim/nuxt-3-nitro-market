@@ -1,24 +1,26 @@
 <script setup lang="ts">
 import { useDark } from "@vueuse/core";
-
-const activeIndex = ref("1");
+import { ElButton } from "element-plus";
+import { ModalsContainer } from "vue-final-modal";
 </script>
 
 <template>
   <div class="w-full">
+    <ModalsContainer />
     <CartPreloader>
       <NuxtLoadingIndicator />
-      <header class="container m-auto p-4 flex items-center justify-between">
-        <NuxtLink to="/">
-          Logo
-          <!-- <NuxtImg style="width: 100px" alt="Element logo" /> -->
-        </NuxtLink>
-        <div class="flex items-center gap-4">
-          <ThemeSwitcher />
-
-          <NuxtLink to="/cart">
-            <CartButton />
-          </NuxtLink>
+      <header>
+        <div class="container m-auto p-4 flex items-center justify-between">
+          <AppLogo />
+          <div class="flex items-center gap-4">
+            <ThemeSwitcher />
+            <NuxtLink to="/orders">
+              <ElButton>Orders</ElButton>
+            </NuxtLink>
+            <NuxtLink to="/cart">
+              <CartButton />
+            </NuxtLink>
+          </div>
         </div>
       </header>
 

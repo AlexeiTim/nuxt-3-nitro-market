@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useDebounceFn } from "@vueuse/shared";
 import { ElFormItem, ElPagination, ElSkeleton } from "element-plus";
+import AddProductToCartButton from "~/components/AddProductToCartButton.vue";
+import DeleteProductFromCartButton from "~/components/DeleteProductFromCartButton.vue";
 import type { Product } from "~/types/product";
 
 const productsStore = useProductsStore();
@@ -8,9 +10,9 @@ const cartStore = useCartStore();
 
 const defaultFilters = {
   page: 1,
-  rating: null,
-  category: null,
-  brand: null,
+  rating: 0,
+  category: "",
+  brand: "",
   search: "",
   ordering: "",
 };
@@ -141,7 +143,9 @@ const sortOptions = [
           v-model:currentPage="filters.page"
           @current-change="handleChangePage"
         />
-        <ElButton @click="handleClearFilters">Clear filters</ElButton>
+        <ElButton icon="CircleClose" @click="handleClearFilters"
+          >Clear filters</ElButton
+        >
       </div>
     </ElCard>
     <div v-if="status === 'pending'" class="product-grid">
@@ -154,7 +158,7 @@ const sortOptions = [
     <div v-else-if="status === 'error'">Error</div>
     <div v-else-if="!!products.length">
       <div class="text-red-300 product-grid">
-        <ElCard v-for="product in products" :key="product">
+        <ElCard v-for="product in products" :key="product.id">
           <NuxtLink :to="`/${product.id}`" class="block w-full h-full">
             <div
               class="flex flex-col items-center justify-between text-center w-full h-full gap-4"
@@ -173,21 +177,11 @@ const sortOptions = [
                   <p class="text-sm">{{ product.price }}Br</p>
                   <ElRate disabled :model-value="product.rating" />
                 </div>
-                <ElButton
-                  :loading="
-                    cartStore.addingProductsToCartIdList.includes(product.id)
-                  "
-                  type="primary"
-                  class="w-full"
-                  :disabled="cartStore.hasProductInCart(product.id)"
-                  @click.stop.prevent="handleAddToCart(product)"
-                >
-                  {{
-                    !cartStore.hasProductInCart(product.id)
-                      ? "Add to cart"
-                      : "Added"
-                  }}
-                </ElButton>
+                <AddProductToCartButton
+                  v-if="!cartStore.hasProductInCart(product.id)"
+                  :product="product"
+                />
+                <DeleteProductFromCartButton v-else :product-id="product.id" />
               </div>
             </div>
           </NuxtLink>

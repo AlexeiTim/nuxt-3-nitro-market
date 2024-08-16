@@ -1,6 +1,8 @@
 <script setup lang="ts">
-const { data: brands } = useFetch("/api/brands");
-const modelValue = defineModel();
+import type { Brand } from "~/types/brand";
+
+const { data: brands } = useFetch<Brand[]>("/api/brands");
+const modelValue = defineModel<number | string>();
 </script>
 
 <template>

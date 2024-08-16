@@ -5,7 +5,10 @@ export default defineNuxtConfig({
       baseApiUrl: process.env.BASE_API_URL,
     },
   },
-  css: ["element-plus/theme-chalk/dark/css-vars.css"],
+  css: [
+    "element-plus/theme-chalk/dark/css-vars.css",
+    "vue-final-modal/style.css",
+  ],
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
   modules: [

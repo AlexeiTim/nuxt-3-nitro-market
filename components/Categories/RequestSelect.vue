@@ -1,6 +1,8 @@
 <script setup lang="ts">
-const { data: categories, status } = useFetch("api/categories");
-const modelValue = defineModel();
+import type { Category } from "~/types/category";
+
+const { data: categories } = useFetch<Category[]>("api/categories");
+const modelValue = defineModel<number | string>({ default: "" });
 </script>
 
 <template>

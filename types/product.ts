@@ -1,3 +1,6 @@
+import type { Brand } from "./brand";
+import type { Category } from "./category";
+
 export interface Product {
   id: number;
   /** Название товара */
@@ -8,6 +11,12 @@ export interface Product {
   price: number;
   /** Краткое описание товара */
   description: string;
+
+  rating: number;
+
+  brand: Brand;
+
+  category: Category;
 }
 
 export interface ProductParams {

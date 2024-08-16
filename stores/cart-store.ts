@@ -3,7 +3,6 @@ import type { Product } from "~/types/product";
 
 export const useCartStore = defineStore("cartStore", () => {
   const cart = ref<CartItem[]>([]);
-  const addingProductsToCartIdList = ref<number[]>([]);
   async function getCartItems() {
     const cartItems = await $fetch<CartItem[]>("/api/cart-items");
     cart.value = cartItems;
@@ -27,7 +26,7 @@ export const useCartStore = defineStore("cartStore", () => {
     cartItemId: number,
     quantity: number
   ) => {
-    const response = await $fetch(`/api/cart-items/${cartItemId}/`, {
+    const response = await $fetch<CartItem>(`/api/cart-items/${cartItemId}/`, {
       method: "PATCH",
       body: {
         quantity,
@@ -44,21 +43,18 @@ export const useCartStore = defineStore("cartStore", () => {
   };
 
   const addProduct = async (product: Product) => {
-    addingProductsToCartIdList.value.push(product.id);
-    const response = await $fetch("/api/cart-items", {
+    const response = await $fetch<CartItem>("/api/cart-items", {
       method: "POST",
       body: {
         product_id: product.id,
         quantity: 1,
       },
     });
-    const cartItem = cart.value.find((cart) => cart.product.id === product.id);
-    if (cartItem) cartItem = response;
-    else cart.value.push(response);
-    const indexLoading = addingProductsToCartIdList.value.findIndex(
-      (c) => c === product.id
+    const cartItemIndex = cart.value.findIndex(
+      (cart) => cart.product.id === product.id
     );
-    addingProductsToCartIdList.value.splice(indexLoading, 1);
+    if (cartItemIndex !== -1) cart.value[cartItemIndex] = response;
+    else cart.value.push(response);
   };
 
   const deleteProduct = (id: number) => {
@@ -93,7 +89,6 @@ export const useCartStore = defineStore("cartStore", () => {
     updateProductQuantity,
     cartProductIdList,
     hasProductInCart,
-    addingProductsToCartIdList,
     totalPrice,
     productCountInCart,
   };
