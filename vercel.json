@@ -1,7 +1,9 @@
 {
-  "functions": {
-    "server/api/**.js": {
-      "maxDuration": 60
+  "version": 2,
+  "builds": [
+    {
+      "src": "nuxt.config.ts",
+      "use": "@vercel/node"
     }
-  }
+  ]
 }
