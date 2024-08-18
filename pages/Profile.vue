@@ -17,7 +17,7 @@ function handleAddCash() {
 </script>
 
 <template>
-  <div>
+  <div v-loading="walletStore.isLoading">
     <template v-if="walletStore.wallet">
       <ElCard>
         <template #header>

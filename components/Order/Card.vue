@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useWalletStore } from "~/stores/wallet-store";
 import type { Order } from "~/types/order";
 
 defineProps<{
@@ -6,8 +7,14 @@ defineProps<{
 }>();
 
 const ordersStore = useOrdersStore();
+const walletStore = useWalletStore();
 
 const { $moment } = useNuxtApp();
+
+async function handleCancelOrder(order: Order) {
+  await ordersStore.cancelOrder(order.id);
+  await walletStore.getWallet();
+}
 </script>
 
 <template>
@@ -25,12 +32,12 @@ const { $moment } = useNuxtApp();
         </div>
         <p>Total price: {{ order.total_price }} Br</p>
       </div>
-      <ElTooltip content="Cancel order" placement="top">
+      <ElTooltip content="Cancel order and return cash" placement="top">
         <ElButton
           icon="Delete"
           type="danger"
           circle
-          @click="ordersStore.cancelOrder(order.id)"
+          @click="handleCancelOrder(order)"
         />
       </ElTooltip>
     </div>

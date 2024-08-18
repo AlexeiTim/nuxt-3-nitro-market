@@ -52,6 +52,7 @@ export const useWalletStore = defineStore("walletStore", () => {
   return {
     wallet,
     error,
+    isLoading,
     createWallet,
     updateWalletCash,
     getWallet,
