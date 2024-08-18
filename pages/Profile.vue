@@ -2,7 +2,6 @@
 import { ElInput } from "element-plus";
 import { useWalletStore } from "~/stores/wallet-store";
 
-const userStore = useUserStore();
 const walletStore = useWalletStore();
 
 const cashAddCount = ref(0);

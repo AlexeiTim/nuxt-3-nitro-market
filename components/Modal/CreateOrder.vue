@@ -3,9 +3,11 @@ import { ElFormItem } from "element-plus";
 import { VueFinalModal } from "vue-final-modal";
 import { notifyService } from "~/services/notify.service";
 import { useOrdersStore } from "~/stores/orders-store";
+import { useWalletStore } from "~/stores/wallet-store";
 
 const cartStore = useCartStore();
 const ordersStore = useOrdersStore();
+const walletStore = useWalletStore();
 
 const formData = ref({
   first_name: "",
@@ -19,6 +21,10 @@ const formRules = ref({
 });
 
 async function handleCreateOrder() {
+  if (walletStore.wallet && walletStore.wallet.cash < cartStore.totalPrice) {
+    notifyService.warning("Need more cash. Add in profile");
+    return;
+  }
   await formRef.value.validate();
 
   isCreateOrderLoading.value = true;
@@ -34,6 +40,7 @@ async function handleCreateOrder() {
   }
 
   await cartStore.getCartItems();
+  await walletStore.getWallet();
 
   ElNotification({
     message: "Create order",
