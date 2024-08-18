@@ -9,9 +9,11 @@ export default defineEventHandler(async (event) => {
     const res = await axios.post<AxiosResponse<User>>("/users/", body);
     return res.data;
   } catch (e: any) {
+    const statusCode = e.response?.status || 500;
+    const statusMessage = e.response?.data || e.message || "Server Error";
     throw createError({
-      statusCode: e?.response.statusCode || 500,
-      statusMessage: e.response.message || "Server Error",
+      statusCode,
+      statusMessage: JSON.stringify(statusMessage),
     });
   }
 });

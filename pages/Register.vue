@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { notifyService } from "~/services/notify.service";
 import { useUserStore } from "~/stores/user-store";
 
 const userStore = useUserStore();
@@ -11,15 +12,23 @@ const formRef = ref();
 const formRules = ref({
   username: [{ required: true, message: "Required field" }],
   password: [
-    { required: true, message: "Required field", min: 8, trigger: "blur" },
+    {
+      required: true,
+      message: "Required field. Min length 8",
+      min: 8,
+      trigger: "blur",
+    },
   ],
 });
 
 async function handleRegister() {
-  isLoading.value = false;
-  await userStore.register(formData.value);
   isLoading.value = true;
-  if (userStore.error) return;
+  await userStore.register(formData.value);
+  isLoading.value = false;
+  if (userStore.error) {
+    notifyService.error(userStore.error);
+    return;
+  }
 
   navigateTo("/login");
 }
