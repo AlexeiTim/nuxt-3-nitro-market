@@ -14,8 +14,11 @@ useHead({
     <template v-if="ordersStore.ordersCount">
       <OrderCard v-for="order in ordersStore.orders" :order="order" />
     </template>
-    <div v-else class="flex items-center justify-center">
+    <div v-else class="flex items-center justify-center flex-col gap-4">
       <ElTag>Empty</ElTag>
+      <NuxtLink to="/cart">
+        <ElButton type="primary">Go to cart?</ElButton>
+      </NuxtLink>
     </div>
   </div>
 </template>

@@ -12,12 +12,14 @@ const walletStore = useWalletStore();
 const formData = ref({
   first_name: "",
   last_name: "",
+  delivery_address: "",
 });
 const isCreateOrderLoading = ref(false);
 const formRef = ref();
 const formRules = ref({
   first_name: [{ required: true, message: "Field is required" }],
   last_name: [{ required: true, message: "Field is required" }],
+  delivery_address: [{ required: true, message: "Field is required" }],
 });
 
 async function handleCreateOrder() {
@@ -89,12 +91,19 @@ const emits = defineEmits<{
         >
           <ElInput v-model="formData.last_name" placeholder="Type lastname" />
         </ElFormItem>
+
+        <ElFormItem>
+          <ElInput
+            v-model="formData.delivery_address"
+            placeholder="Type delivery address"
+          />
+        </ElFormItem>
       </ElForm>
       <div class="flex items-end flex-col justify-between">
         <p class="text-sm">Total: {{ cartStore.totalPrice }} Br</p>
-        <ElButton :loading="isCreateOrderLoading" @click="handleCreateOrder"
-          >Create Order</ElButton
-        >
+        <ElButton :loading="isCreateOrderLoading" @click="handleCreateOrder">
+          Create Order
+        </ElButton>
       </div>
     </div>
   </VueFinalModal>

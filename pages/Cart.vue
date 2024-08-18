@@ -16,8 +16,14 @@ useAsyncData("cart", () =>
 </script>
 
 <template>
-  <div v-if="!cartStore.cart.length" class="flex items-center justify-center">
+  <div
+    v-if="!cartStore.cart.length"
+    class="flex items-center justify-center flex-col gap-2"
+  >
     <ElTag type="primary">Cart is empty</ElTag>
+    <NuxtLink to="/">
+      <ElButton type="primary">Go to products?</ElButton>
+    </NuxtLink>
   </div>
   <div v-else class="flex flex-col gap-4 w-full">
     <OrderCreateButton />

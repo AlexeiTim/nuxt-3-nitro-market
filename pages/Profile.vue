@@ -26,7 +26,7 @@ function handleAddCash() {
         <p>Cash: {{ walletStore.wallet.cash }} Br</p>
         <ElInput type="number" v-model="cashAddCount" />
         <template #footer>
-          <ElButton @click="handleAddCash">Add cash?</ElButton>
+          <ElButton @click="handleAddCash">Add cash</ElButton>
         </template>
       </ElCard>
     </template>
