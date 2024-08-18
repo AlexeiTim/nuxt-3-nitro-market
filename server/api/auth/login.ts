@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
       });
     return response.data;
   } catch (e) {
+    console.log(e);
     const error = defineError(e);
     throw createError(error);
   }

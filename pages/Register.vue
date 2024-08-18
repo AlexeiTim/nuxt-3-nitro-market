@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import { notifyService } from "~/services/notify.service";
-import { useUserStore } from "~/stores/user-store";
+const { authData, isLoading, register } = useAuth();
 
-const userStore = useUserStore();
-const formData = ref({
-  username: "",
-  password: "",
-});
-const isLoading = ref(false);
 const formRef = ref();
 const formRules = ref({
   username: [{ required: true, message: "Required field" }],
@@ -22,15 +15,8 @@ const formRules = ref({
 });
 
 async function handleRegister() {
-  isLoading.value = true;
-  await userStore.register(formData.value);
-  isLoading.value = false;
-  if (userStore.error) {
-    notifyService.error(userStore.error);
-    return;
-  }
-
-  navigateTo("/login");
+  await formRef.value.validate();
+  await register();
 }
 
 definePageMeta({
@@ -45,16 +31,16 @@ definePageMeta({
       <ElForm
         ref="formRef"
         :rules="formRules"
-        :model="formData"
+        :model="authData"
         label-position="top"
       >
         <ElFormItem label="Username" prop="username">
-          <ElInput v-model="formData.username" placeholder="Type username" />
+          <ElInput v-model="authData.username" placeholder="Type username" />
         </ElFormItem>
 
         <ElFormItem label="Password" prop="password">
           <ElInput
-            v-model="formData.password"
+            v-model="authData.password"
             placeholder="Type password"
             type="password"
             show-password
