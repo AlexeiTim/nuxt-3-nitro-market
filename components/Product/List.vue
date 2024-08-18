@@ -21,6 +21,7 @@ defineProps<{
   <div v-else-if="!!products.length">
     <div class="text-red-300 product-grid">
       <ProductCard
+        class="hover:scale-105"
         v-for="product in products"
         :key="product.id"
         :product="product"
