@@ -31,7 +31,7 @@ async function handleLogout() {
           <template #dropdown>
             <p class="p-1 text-center">
               <span>{{ userStore.user.username }}</span>
-              <p>1000 Br</p>
+            <p>1000 Br</p>
             </p>
             <ElDropdownItem @click="handleLogout" class="text-center">
               Logout
@@ -41,9 +41,16 @@ async function handleLogout() {
             </ElDropdownItem>
           </template>
         </ElDropdown>
-        <NuxtLink v-else to="/login">
-          <ElButton>Sign in</ElButton>
-        </NuxtLink>
+        <div v-else>
+          <NuxtLink to="/login">
+            <ElButton>Sign in</ElButton>
+          </NuxtLink>
+
+          <NuxtLink to="/register">
+            <ElButton>Sign up</ElButton>
+          </NuxtLink>
+        </div>
+
       </div>
     </div>
   </header>

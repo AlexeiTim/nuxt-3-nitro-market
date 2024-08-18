@@ -40,13 +40,14 @@ const handleInputSearch = useDebounceFn(() => {
   <ElCard>
     <template #header> Filters </template>
     <ElForm label-position="top" class="flex flex-col">
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 md:gap-4">
         <ElFormItem label="Search">
           <ElInput
             v-model="filters.search"
             placeholder="Type..."
-            clearbale
+            clearable
             @input="handleInputSearch"
+            suffix-icon="Search"
           />
         </ElFormItem>
 
@@ -65,7 +66,7 @@ const handleInputSearch = useDebounceFn(() => {
           </ElSelect>
         </ElFormItem>
       </div>
-      <div class="grid grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 md:gap-4">
         <ElFormItem label="Rating">
           <ElSelect
             v-model="filters.rating"
@@ -97,14 +98,13 @@ const handleInputSearch = useDebounceFn(() => {
         </ElFormItem>
       </div>
     </ElForm>
-    <div class="flex justify-between">
-      <div>
-        <slot />
-      </div>
-
+    <div class="flex justify-end">
       <ElButton icon="CircleClose" @click="handleClearFilters"
         >Clear filters</ElButton
       >
+    </div>
+    <div>
+      <slot />
     </div>
   </ElCard>
 </template>
