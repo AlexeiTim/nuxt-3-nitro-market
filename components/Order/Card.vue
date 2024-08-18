@@ -29,6 +29,7 @@ async function handleCancelOrder(order: Order) {
           <h3 class="text-semibold">Customer</h3>
           <p>Firstname: {{ order.first_name }}</p>
           <p>Lastname: {{ order.last_name }}</p>
+          <p>Delivery address: {{ order.delivery_address }}</p>
         </div>
         <p>Total price: {{ order.total_price }} Br</p>
       </div>

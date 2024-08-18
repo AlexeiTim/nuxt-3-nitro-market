@@ -63,7 +63,7 @@ const emits = defineEmits<{
     overlay-transition="vfm-fade"
     content-transition="vfm-fade"
   >
-    <div class="w-[320px] h-[300px] gap-4 flex flex-col justify-between">
+    <div class="w-[320px] h-[400px] gap-4 flex flex-col justify-between">
       <div class="flex items-center justify-between">
         <h3>Order</h3>
         <ElIcon class="cursor-pointer" @click="emits('close')">
@@ -76,23 +76,15 @@ const emits = defineEmits<{
         :model="formData"
         label-position="top"
       >
-        <ElFormItem
-          prop="first_name"
-          v-model="formData.first_name"
-          label="Firstname"
-        >
+        <ElFormItem prop="first_name" label="Firstname">
           <ElInput v-model="formData.first_name" placeholder="Type firstname" />
         </ElFormItem>
 
-        <ElFormItem
-          prop="last_name"
-          v-model="formData.last_name"
-          label="Last Name"
-        >
+        <ElFormItem prop="last_name" label="Last Name">
           <ElInput v-model="formData.last_name" placeholder="Type lastname" />
         </ElFormItem>
 
-        <ElFormItem>
+        <ElFormItem prop="delivery_address" label="Delivery address">
           <ElInput
             v-model="formData.delivery_address"
             placeholder="Type delivery address"
