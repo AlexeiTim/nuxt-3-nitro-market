@@ -15,10 +15,10 @@ async function handleLogout() {
       <AppLogo />
       <div class="flex items-center gap-4">
         <ThemeSwitcher />
-        <NuxtLink to="/orders" v-show="userStore.user">
+        <NuxtLink class="hidden sm:block" to="/orders" v-show="userStore.user">
           <OrderButton />
         </NuxtLink>
-        <NuxtLink to="/cart" v-show="userStore.user">
+        <NuxtLink class="hidden sm:block" to="/cart" v-show="userStore.user">
           <CartButton />
         </NuxtLink>
 
@@ -33,12 +33,19 @@ async function handleLogout() {
               <span>{{ userStore.user.username }}</span>
             <p>1000 Br</p>
             </p>
-            <ElDropdownItem @click="handleLogout" class="text-center">
-              Logout
-            </ElDropdownItem>
-            <ElDropdownItem>
-              <NuxtLink to="/profile"> Profile </NuxtLink>
-            </ElDropdownItem>
+            <div class="flex flex-col gap-4 p-4">
+              <ElButton @click="handleLogout" class="w-full">Logout</ElButton>
+              <NuxtLink to="/profile" class="w-full">
+                <ElButton class="w-full">Profile</ElButton>
+              </NuxtLink>
+              <NuxtLink class="md:hidden block w-full" to="/orders" v-show="userStore.user">
+                <OrderButton style="width:100%" class="w-full" />
+              </NuxtLink>
+
+              <NuxtLink to="/cart" v-show="userStore.user" class="w-full md:hidden block">
+                <CartButton class="w-full" />
+              </NuxtLink>
+            </div>
           </template>
         </ElDropdown>
         <div v-else class="flex items-center gap-2">
@@ -49,6 +56,7 @@ async function handleLogout() {
           <NuxtLink to="/register">
             <ElButton type="primary">Sign up</ElButton>
           </NuxtLink>
+
         </div>
 
       </div>
@@ -56,4 +64,9 @@ async function handleLogout() {
   </header>
 </template>
 
-<style scoped></style>
+
+<style scoped>
+.el-dropdown-menu__item {
+  display: none;
+}
+</style>

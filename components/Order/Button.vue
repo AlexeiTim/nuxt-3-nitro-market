@@ -3,8 +3,8 @@ const ordersStore = useOrdersStore();
 </script>
 
 <template>
-  <ElBadge :value="ordersStore.ordersCount" :hidden="!ordersStore.ordersCount">
-    <ElButton>Orders</ElButton>
+  <ElBadge class="w-full" :value="ordersStore.ordersCount" :hidden="!ordersStore.ordersCount">
+    <ElButton class="w-full">Orders</ElButton>
   </ElBadge>
 </template>
 

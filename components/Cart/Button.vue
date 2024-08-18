@@ -3,11 +3,8 @@ const cartStore = useCartStore();
 </script>
 
 <template>
-  <ElBadge
-    :value="cartStore.productCountInCart"
-    :hidden="!cartStore.productCountInCart"
-  >
-    <ElButton icon="ShoppingCart"> Cart </ElButton>
+  <ElBadge :value="cartStore.productCountInCart" :hidden="!cartStore.productCountInCart">
+    <ElButton class="w-full" icon="ShoppingCart"> Cart </ElButton>
   </ElBadge>
 </template>
 
