@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useWalletStore } from "~/stores/wallet-store";
 import type { Order } from "~/types/order";
 
 defineProps<{

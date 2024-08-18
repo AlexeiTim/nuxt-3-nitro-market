@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { notifyService } from "~/services/notify.service";
 import type { Product } from "~/types/product";
 
 const props = defineProps<{
@@ -9,35 +8,21 @@ const props = defineProps<{
 const reviewsStore = useReviewsStore();
 const userStore = useUserStore();
 const route = useRoute();
-
-const comment = ref("");
-const isLoading = ref(false);
-const product = computed(() => props.product);
+const { comment, isLoading, addReview, removeReview } = useReview();
 
 const { status } = useAsyncData(() =>
   reviewsStore.getProductReviews(+route.params.id)
 );
 
+const product = computed(() => props.product);
+
 async function handleAddComment() {
   if (!product.value) return;
-
-  isLoading.value = true;
-  await reviewsStore.createComment({
-    comment: comment.value,
-    product: product.value?.id,
-  });
-  isLoading.value = false;
-
-  if (reviewsStore.error) return;
-
-  comment.value = "";
-  notifyService.success("Review added");
+  addReview(product.value);
 }
 
 async function handleDeleteReview(id: number) {
-  isLoading.value = true;
-  await reviewsStore.removeReview(id);
-  isLoading.value = false;
+  removeReview(id);
 }
 
 onBeforeUnmount(() => {
@@ -93,6 +78,12 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </ElCard>
+    <div v-else class="flex items-center gap-2">
+      <ElTag type="warning"> If you wanna add review, you need login</ElTag>
+      <NuxtLink to="/login">
+        <ElLink>Go to login</ElLink>
+      </NuxtLink>
+    </div>
   </div>
 </template>
 
