@@ -27,15 +27,14 @@ useHead({
 
 <template>
   <div class="w-full flex flex-col gap-4 h-full">
-    <ProductFilters v-model="filters" @change-filters="handleChangeFilter">
-      <ElPagination
-        v-if="!!products.length"
-        layout="total, prev, pager, next"
-        :total="totalProducts"
-        v-model:currentPage="filters.page"
-        @current-change="handleChangePage"
-      />
-    </ProductFilters>
+    <ProductFilters v-model="filters" @change-filters="handleChangeFilter" />
+    <ElPagination
+      v-if="!!products.length"
+      layout="total, prev, pager, next"
+      :total="totalProducts"
+      v-model:currentPage="filters.page"
+      @current-change="handleChangePage"
+    />
     <ProductList :products="products" :status="status" />
     <ElPagination
       v-if="!!products.length"

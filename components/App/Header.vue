@@ -41,13 +41,13 @@ async function handleLogout() {
             </ElDropdownItem>
           </template>
         </ElDropdown>
-        <div v-else>
+        <div v-else class="flex items-center gap-2">
           <NuxtLink to="/login">
             <ElButton>Sign in</ElButton>
           </NuxtLink>
 
           <NuxtLink to="/register">
-            <ElButton>Sign up</ElButton>
+            <ElButton type="primary">Sign up</ElButton>
           </NuxtLink>
         </div>
 
