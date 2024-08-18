@@ -1,9 +1,17 @@
 <script setup lang="ts">
+import { useDark } from "@vueuse/core";
 import { ModalsContainer } from "vue-final-modal";
 
 const userStore = useUserStore();
+const isDark = useDark();
 
-await useAsyncData("user", () => userStore.getCurrentUser());
+const styles = computed(() => ({
+  backgroundColor: isDark.value ? "#222222" : "white",
+}));
+
+onBeforeMount(() => {
+  userStore.getCurrentUser();
+});
 </script>
 
 <template>
@@ -11,7 +19,7 @@ await useAsyncData("user", () => userStore.getCurrentUser());
     <ModalsContainer />
     <DataPreloader>
       <NuxtLoadingIndicator />
-      <AppHeader />
+      <AppHeader :style="styles" class="sticky top-0 z-20 shadow-sm" />
 
       <main class="container m-auto p-4 w-full">
         <slot />
