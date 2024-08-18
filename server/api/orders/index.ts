@@ -9,8 +9,6 @@ export default defineEventHandler(async (event) => {
     return response.data;
   } else if (method === "POST") {
     const body = await readBody(event);
-    console.log("start request");
-    console.log(body);
     const response = await axios(`/orders/`, {
       method: "POST",
       data: body,

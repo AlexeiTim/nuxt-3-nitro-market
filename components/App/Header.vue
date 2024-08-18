@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useWalletStore } from '~/stores/wallet-store';
+
 const userStore = useUserStore();
+const walletStore = useWalletStore()
 
 async function handleLogout() {
   await userStore.logout();
@@ -31,7 +34,7 @@ async function handleLogout() {
           <template #dropdown>
             <p class="p-1 text-center">
               <span>{{ userStore.user.username }}</span>
-            <p>1000 Br</p>
+            <p v-if="walletStore.wallet">{{ walletStore.wallet.cash }} Br</p>
             </p>
             <div class="flex flex-col gap-4 p-4">
               <ElButton @click="handleLogout" class="w-full">Logout</ElButton>

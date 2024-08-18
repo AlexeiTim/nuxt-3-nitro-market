@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useDark } from "@vueuse/core";
 import { ModalsContainer } from "vue-final-modal";
+import { useWalletStore } from "~/stores/wallet-store";
 
 const userStore = useUserStore();
 const cartStore = useCartStore();
 const orderStore = useOrdersStore();
+const walletStore = useWalletStore();
 const isDark = useDark();
 
 const styles = computed(() => ({
@@ -15,6 +17,7 @@ onBeforeMount(async () => {
   await userStore.getCurrentUser();
   cartStore.getCartItems();
   orderStore.getOrders();
+  walletStore.getWallet();
 });
 </script>
 
