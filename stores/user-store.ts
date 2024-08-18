@@ -26,7 +26,6 @@ export const useUserStore = defineStore("userStore", () => {
 
     try {
       const userResponse = await $fetch<User>("/api/users/me");
-      console.log(userResponse);
       user.value = userResponse;
     } catch (e) {
       error.value = e;

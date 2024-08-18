@@ -47,6 +47,7 @@ export const useOrdersStore = defineStore("ordersStore", () => {
   return {
     orders,
     ordersCount,
+    error,
     cancelOrder,
     createOrder,
     getOrders,

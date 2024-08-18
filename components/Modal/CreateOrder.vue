@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ElFormItem } from "element-plus";
 import { VueFinalModal } from "vue-final-modal";
+import { notifyService } from "~/services/notify.service";
 import { useOrdersStore } from "~/stores/orders-store";
 
 const cartStore = useCartStore();
@@ -25,8 +26,14 @@ async function handleCreateOrder() {
     ...formData.value,
     total_price: cartStore.totalPrice,
   });
-  await cartStore.getCartItems();
   isCreateOrderLoading.value = false;
+
+  if (ordersStore.error) {
+    notifyService.error("Bad request");
+    return;
+  }
+
+  await cartStore.getCartItems();
 
   ElNotification({
     message: "Create order",

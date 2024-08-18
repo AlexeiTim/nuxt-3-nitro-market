@@ -1,8 +1,8 @@
 import { Brand } from "~/types/brand";
 
-export default defineEventHandler(async () => {
-  const config = useRuntimeConfig();
+export default defineEventHandler(async (event) => {
+  const axios = createAxiosInstance(event);
 
-  const brands = await $fetch<Brand[]>(`${config.public.baseApiUrl}/brands`);
-  return brands;
+  const response = await axios<Brand[]>(`/brands`);
+  return response.data;
 });

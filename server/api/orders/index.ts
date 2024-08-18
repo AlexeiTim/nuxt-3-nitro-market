@@ -1,24 +1,21 @@
 import { Order } from "~/types/order";
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig();
+  const axios = createAxiosInstance(event);
   const method = event.node.req.method;
 
   if (method === "GET") {
-    const response = await $fetch<Order[]>(
-      `${config.public.baseApiUrl}/orders`
-    );
-    return response;
+    const response = await axios<Order[]>(`/orders/`);
+    return response.data;
   } else if (method === "POST") {
     const body = await readBody(event);
-    const response = await $fetch(`${config.public.baseApiUrl}/orders/`, {
+    console.log("start request");
+    console.log(body);
+    const response = await axios(`/orders/`, {
       method: "POST",
-      body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      data: body,
     });
-    return response;
+    return response.data;
   } else {
     throw createError({ statusCode: 405, statusMessage: "Method not allowed" });
   }

@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import { useCartStore } from "~/stores/cart-store";
+import { useOrdersStore } from "~/stores/orders-store";
 
 const cartStore = useCartStore();
 
 useHead({
   title: "Cart",
 });
+
+const orderStore = useOrdersStore();
+
+useAsyncData("cart", () =>
+  Promise.all([cartStore.getCartItems(), orderStore.getOrders()])
+);
 </script>
 
 <template>

@@ -1,46 +1,34 @@
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const method = event.node.req.method;
+  const axios = createAxiosInstance(event);
 
   if (method === "GET") {
-    const cartItems = await $fetch(`${config.public.baseApiUrl}/cart-items`);
-    return cartItems;
+    const response = await axios({
+      url: `/cart-items`,
+    });
+    return response.data;
   } else if (method === "POST") {
     const body = await readBody(event);
-    const response = await $fetch(`${config.public.baseApiUrl}/add-to-cart/`, {
+    const response = await axios(`/add-to-cart/`, {
       method: "POST",
-      body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      data: body,
     });
-    return response;
+    return response.data;
   } else if (method === "DELETE") {
     const body = await readBody(event);
-    const response = await $fetch(
-      `${config.public.baseApiUrl}/remove-from-cart/`,
-      {
-        method: "DELETE",
-        body,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return response;
+    const response = await axios(`/remove-from-cart/`, {
+      method: "DELETE",
+      data: body,
+    });
+    return response.data;
   } else if (method === "PATCH") {
     const body = await readBody(event);
-    const response = await $fetch(
-      `${config.public.baseApiUrl}/update-cart-item/`,
-      {
-        method: "PATCH",
-        body: JSON.stringify(body),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return response;
+    const response = await axios(`/update-cart-item/`, {
+      method: "PATCH",
+      data: body,
+    });
+    return response.data;
   } else {
     throw createError({
       statusCode: 405,

@@ -10,10 +10,14 @@ export const createAxiosInstance = (event: H3Event) => {
   const token = getCookie(event, "authToken");
   if (token) {
     axiosInstance.defaults.headers.common["Authorization"] = `Token ${token}`;
+  } else {
+    console.warn("No auth token found");
   }
 
   axiosInstance.interceptors.request.use(
-    (config) => config,
+    (config) => {
+      return config;
+    },
     (error) => {
       return Promise.reject(error);
     }

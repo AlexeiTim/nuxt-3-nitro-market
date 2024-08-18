@@ -1,6 +1,5 @@
-export default defineEventHandler(async () => {
-  const config = useRuntimeConfig();
-
-  const categoris = await $fetch(`${config.public.baseApiUrl}/categories`);
-  return categoris;
+export default defineEventHandler(async (event) => {
+  const axios = createAxiosInstance(event);
+  const res = await axios(`/categories`);
+  return res.data;
 });

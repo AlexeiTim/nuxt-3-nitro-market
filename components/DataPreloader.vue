@@ -4,7 +4,7 @@ import { useOrdersStore } from "~/stores/orders-store";
 const cartStore = useCartStore();
 const orderStore = useOrdersStore();
 
-useAsyncData("cart", () =>
+useAsyncData(() =>
   Promise.all([cartStore.getCartItems(), orderStore.getOrders()])
 );
 </script>
