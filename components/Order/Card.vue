@@ -6,15 +6,8 @@ defineProps<{
   order: Order;
 }>();
 
-const ordersStore = useOrdersStore();
-const walletStore = useWalletStore();
-
 const { $moment } = useNuxtApp();
-
-async function handleCancelOrder(order: Order) {
-  await ordersStore.cancelOrder(order.id);
-  await walletStore.getWallet();
-}
+const { cancelOrder } = useOrder();
 </script>
 
 <template>
@@ -38,7 +31,7 @@ async function handleCancelOrder(order: Order) {
           icon="Delete"
           type="danger"
           circle
-          @click="handleCancelOrder(order)"
+          @click="cancelOrder(order.id)"
         />
       </ElTooltip>
     </div>

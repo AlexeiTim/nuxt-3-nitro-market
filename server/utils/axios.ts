@@ -1,4 +1,3 @@
-// server/utils/axios.ts
 import axios from "axios";
 import { getCookie, H3Event } from "h3";
 

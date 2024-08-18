@@ -1,3 +1,5 @@
+import { defineError } from "~/server/utils/defineError";
+
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   const axios = createAxiosInstance(event);
@@ -9,9 +11,7 @@ export default defineEventHandler(async (event) => {
     });
     return res.data;
   } catch (e) {
-    return createError({
-      statusCode: 500,
-      statusMessage: "ERROR GET REVIEW",
-    });
+    const error = defineError(e);
+    throw createError(error);
   }
 });

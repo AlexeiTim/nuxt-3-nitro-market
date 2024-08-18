@@ -1,3 +1,5 @@
+import { defineError } from "~/server/utils/defineError";
+
 export default defineEventHandler(async (event) => {
   const axios = createAxiosInstance(event);
 
@@ -5,8 +7,7 @@ export default defineEventHandler(async (event) => {
     const res = await axios.get("/users/me/");
     return res.data;
   } catch (e) {
-    createError({
-      statusMessage: "Bad request",
-    });
+    const error = defineError(e);
+    throw createError(error);
   }
 });

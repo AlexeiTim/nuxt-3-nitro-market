@@ -1,4 +1,5 @@
 import { AxiosResponse } from "axios";
+import { defineError } from "~/server/utils/defineError";
 import { User } from "~/types/user";
 
 export default defineEventHandler(async (event) => {
@@ -9,11 +10,7 @@ export default defineEventHandler(async (event) => {
     const res = await axios.post<AxiosResponse<User>>("/users/", body);
     return res.data;
   } catch (e: any) {
-    const statusCode = e.response?.status || 500;
-    const statusMessage = e.response?.data || e.message || "Server Error";
-    throw createError({
-      statusCode,
-      statusMessage: JSON.stringify(statusMessage),
-    });
+    const error = defineError(e);
+    throw createError(error);
   }
 });

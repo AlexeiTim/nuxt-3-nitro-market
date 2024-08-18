@@ -1,5 +1,12 @@
+import { defineError } from "~/server/utils/defineError";
+
 export default defineEventHandler(async (event) => {
-  const axios = createAxiosInstance(event);
-  const res = await axios(`/categories`);
-  return res.data;
+  try {
+    const axios = createAxiosInstance(event);
+    const res = await axios(`/categories`);
+    return res.data;
+  } catch (e) {
+    const error = defineError(e);
+    throw createError(error);
+  }
 });

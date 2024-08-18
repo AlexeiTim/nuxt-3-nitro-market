@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import { ElFormItem } from "element-plus";
 import { VueFinalModal } from "vue-final-modal";
-import { notifyService } from "~/services/notify.service";
-import { useOrdersStore } from "~/stores/orders-store";
-import { useWalletStore } from "~/stores/wallet-store";
+
+const emits = defineEmits<{
+  (e: "close"): void;
+}>();
 
 const cartStore = useCartStore();
-const ordersStore = useOrdersStore();
-const walletStore = useWalletStore();
+const { createOrder, isLoading } = useOrder();
 
 const formData = ref({
   first_name: "",
   last_name: "",
   delivery_address: "",
 });
-const isCreateOrderLoading = ref(false);
 const formRef = ref();
 const formRules = ref({
   first_name: [{ required: true, message: "Field is required" }],
@@ -23,37 +22,11 @@ const formRules = ref({
 });
 
 async function handleCreateOrder() {
-  if (walletStore.wallet && walletStore.wallet.cash < cartStore.totalPrice) {
-    notifyService.warning("Need more cash. Add in profile");
-    return;
-  }
   await formRef.value.validate();
-
-  isCreateOrderLoading.value = true;
-  await ordersStore.createOrder({
-    ...formData.value,
-    total_price: cartStore.totalPrice,
+  await createOrder(formData.value, () => {
+    emits("close");
   });
-  isCreateOrderLoading.value = false;
-
-  if (ordersStore.error) {
-    notifyService.error("Bad request");
-    return;
-  }
-
-  await cartStore.getCartItems();
-  await walletStore.getWallet();
-
-  ElNotification({
-    message: "Create order",
-    type: "success",
-  });
-  emits("close");
 }
-
-const emits = defineEmits<{
-  (e: "close"): void;
-}>();
 </script>
 
 <template>
@@ -93,7 +66,7 @@ const emits = defineEmits<{
       </ElForm>
       <div class="flex items-end flex-col justify-between">
         <p class="text-sm">Total: {{ cartStore.totalPrice }} Br</p>
-        <ElButton :loading="isCreateOrderLoading" @click="handleCreateOrder">
+        <ElButton :loading="isLoading" @click="handleCreateOrder">
           Create Order
         </ElButton>
       </div>

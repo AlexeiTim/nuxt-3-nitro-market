@@ -1,9 +1,16 @@
+import { defineError } from "~/server/utils/defineError";
+
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   const axios = createAxiosInstance(event);
 
-  const res = await axios.get("/products", {
-    params: query,
-  });
-  return res.data;
+  try {
+    const res = await axios.get("/products", {
+      params: query,
+    });
+    return res.data;
+  } catch (e) {
+    const error = defineError(e);
+    throw createError(error);
+  }
 });

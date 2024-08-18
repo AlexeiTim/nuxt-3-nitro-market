@@ -1,4 +1,5 @@
 import { createAxiosInstance } from "~/server/utils/axios";
+import { defineError } from "~/server/utils/defineError";
 
 export default defineEventHandler(async (event) => {
   const axios = createAxiosInstance(event);
@@ -16,7 +17,8 @@ export default defineEventHandler(async (event) => {
         path: "/",
       });
     return response.data;
-  } catch (error) {
-    createError({ data: error });
+  } catch (e) {
+    const error = defineError(e);
+    throw createError(error);
   }
 });
